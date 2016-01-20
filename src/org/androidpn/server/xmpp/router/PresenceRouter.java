@@ -59,6 +59,7 @@ public class PresenceRouter {
         }
         ClientSession session = sessionManager.getSession(packet.getFrom());
 
+        //判断是否在线
         if (session == null || session.getStatus() != Session.STATUS_CONNECTED) {
             handle(packet);
         } else {

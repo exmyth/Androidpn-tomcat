@@ -147,6 +147,7 @@ public class IQAuthHandler extends IQHandler {
                 }
 
                 // Set the session authenticated successfully
+                //登录成功,改变状态,下次PresenceRouter.route判断在线成立
                 session.setAuthToken(token, resource);
                 packet.setFrom(session.getAddress());
                 reply = IQ.createResultIQ(packet);

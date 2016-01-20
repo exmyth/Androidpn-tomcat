@@ -57,7 +57,6 @@ public class PresenceUpdateHandler {
         try {
             Presence presence = (Presence) packet;
             Presence.Type type = presence.getType();
-
             if (type == null) { // null == available
                 if (session != null
                         && session.getStatus() == Session.STATUS_CLOSED) {
@@ -66,6 +65,7 @@ public class PresenceUpdateHandler {
                     return;
                 }
 
+                //把状态保存到session,后台可以从session中取得在线信息
                 if (session != null) {
                     session.setPresence(presence);
                     if (!session.isInitialized()) {
