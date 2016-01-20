@@ -135,8 +135,9 @@ public class IQRegisterHandler extends IQHandler {
                     user.setPassword(password);
                     user.setEmail(email);
                     user.setName(name);
+                    //把连接的用户信息保存到数据库中
                     userService.saveUser(user);
-
+                    //生成响应数据包
                     reply = IQ.createResultIQ(packet);
                 }
             } catch (Exception ex) {
@@ -159,6 +160,7 @@ public class IQRegisterHandler extends IQHandler {
 
         // Send the response directly to the session
         if (reply != null) {
+        	//发送响应数据包
             session.process(reply);
         }
         return null;

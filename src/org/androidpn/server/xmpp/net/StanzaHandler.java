@@ -81,6 +81,7 @@ public class StanzaHandler {
      */
     public void process(String stanza, XMPPPacketReader reader)
             throws Exception {
+    	//是否是初始化连接
         boolean initialStream = stanza.startsWith("<stream:stream");
         if (!sessionCreated || initialStream) {
             if (!initialStream) {
@@ -90,6 +91,7 @@ public class StanzaHandler {
                 sessionCreated = true;
                 MXParser parser = reader.getXPPParser();
                 parser.setInput(new StringReader(stanza));
+                //创建会话
                 createSession(parser);
             } else if (startedTLS) {
                 startedTLS = false;
@@ -126,7 +128,7 @@ public class StanzaHandler {
         } else if ("presence".equals(tag)) {
             log.debug("presence...");
             processPresence(doc);
-        } else if ("iq".equals(tag)) {
+        } else if ("iq".equals(tag)) {//注册消息
             log.debug("iq...");
             processIQ(doc);
         } else {
@@ -222,6 +224,7 @@ public class StanzaHandler {
         session.incrementClientPacketCount();
     }
 
+    //xml->IQ
     private IQ getIQ(Element doc) {
         Element query = doc.element("query");
         if (query != null && "jabber:iq:roster".equals(query.getNamespaceURI())) {
@@ -239,8 +242,10 @@ public class StanzaHandler {
         // Create the correct session based on the sent namespace
         String namespace = xpp.getNamespace(null);
         if ("jabber:client".equals(namespace)) {
+        	//创建session
             session = ClientSession.createSession(serverName, connection, xpp);
             if (session == null) {
+            	//服务器要返回客户端的数据
                 StringBuilder sb = new StringBuilder(250);
                 sb.append("<?xml version='1.0' encoding='UTF-8'?>");
                 sb.append("<stream:stream from=\"").append(serverName);
@@ -254,6 +259,7 @@ public class StanzaHandler {
                 StreamError error = new StreamError(
                         StreamError.Condition.bad_namespace_prefix);
                 sb.append(error.toXML());
+                //发送文本数据
                 connection.deliverRawText(sb.toString());
                 connection.close();
                 log

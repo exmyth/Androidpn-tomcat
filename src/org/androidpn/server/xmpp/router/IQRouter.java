@@ -89,6 +89,7 @@ public class IQRouter {
         }
     }
 
+    //处理注册
     private void handle(IQ packet) {
         try {
             Element childElement = packet.getChildElement();
@@ -107,6 +108,7 @@ public class IQRouter {
                     sendErrorPacket(packet,
                             PacketError.Condition.service_unavailable);
                 } else {
+                	//继续处理
                     handler.process(packet);
                 }
             }

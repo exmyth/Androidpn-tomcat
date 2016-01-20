@@ -38,6 +38,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
  *
  * @author Sehwan Noh (devnoh@gmail.com)
  */
+//消息收发管理类
 public class XmppIoHandler implements IoHandler {
 
     private static final Log log = LogFactory.getLog(XmppIoHandler.class);
@@ -148,6 +149,7 @@ public class XmppIoHandler implements IoHandler {
 
         // The stanza handler processes the message
         try {
+        	//处理消息
             handler.process((String) message, parser);
         } catch (Exception e) {
             log.error(

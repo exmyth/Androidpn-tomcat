@@ -246,6 +246,7 @@ public abstract class Session {
      */
     public void deliver(Packet packet) {
         if (connection != null && !connection.isClosed()) {
+        	//所有数据通过connection发给客户端
             connection.deliver(packet);
         }
     }
