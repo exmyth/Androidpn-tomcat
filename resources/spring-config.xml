@@ -130,5 +130,10 @@
 		<property name="filterChainBuilder" ref="filterChainBuilder" />
 		<property name="reuseAddress" value="true" />
 	</bean>
+	
+	<!-- 3 second idle time,per second use 10 rest -->
+	<bean id="sessionConfig" factory-bean="ioAcceptor" factory-method="getSessionConfig">
+		<property name="readerIdleTime" value="210"></property>
+	</bean>
 
 </beans>
