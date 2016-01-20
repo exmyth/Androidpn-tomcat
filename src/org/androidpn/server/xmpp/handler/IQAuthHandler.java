@@ -95,6 +95,7 @@ public class IQAuthHandler extends IQHandler {
                     reply.setTo((JID) null);
                 }
             } else { // set query
+            	//第二次真正认证会进入此处执行
                 String resource = query.elementText("resource");
                 String username = query.elementText("username");
                 String password = query.elementText("password");
@@ -131,9 +132,12 @@ public class IQAuthHandler extends IQHandler {
 
                 // Verify that username and password are correct
                 AuthToken token = null;
+                //明文认证
                 if (password != null && AuthManager.isPlainSupported()) {
                     token = AuthManager.authenticate(username, password);
-                } else if (digest != null && AuthManager.isDigestSupported()) {
+                } 
+                //加密认证
+                else if (digest != null && AuthManager.isDigestSupported()) {
                     token = AuthManager.authenticate(username, session
                             .getStreamID().toString(), digest);
                 }
@@ -164,6 +168,7 @@ public class IQAuthHandler extends IQHandler {
 
         // Send the response directly to the session
         if (reply != null) {
+        	//发送回客户端
             session.process(reply);
         }
         return null;

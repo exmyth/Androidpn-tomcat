@@ -52,7 +52,9 @@ public abstract class IQHandler {
     public void process(Packet packet) {
         IQ iq = (IQ) packet;
         try {
-        	//handleIQ是抽象方法,注册交由IQRegisterHandler.handleIQ处理
+        	//handleIQ是抽象方法,
+        	//注册交由IQRegisterHandler.handleIQ处理
+        	//登录交由IQAuthHandler.handleIQ处理
             IQ reply = handleIQ(iq);
             if (reply != null) {
                 PacketDeliverer.deliver(reply);

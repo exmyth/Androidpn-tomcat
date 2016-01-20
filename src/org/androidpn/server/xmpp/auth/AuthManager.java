@@ -77,7 +77,7 @@ public class AuthManager {
             throw new UnauthenticatedException();
         }
         username = username.trim().toLowerCase();
-        if (username.contains("@")) {
+        if (username.contains("@")) {//带域名
             int index = username.indexOf("@");
             String domain = username.substring(index + 1);
             if (domain.equals(XmppServer.getInstance().getServerName())) {
@@ -87,6 +87,7 @@ public class AuthManager {
             }
         }
         try {
+        	//getPassword查询数据库
             if (!password.equals(getPassword(username))) {
                 throw new UnauthenticatedException();
             }
