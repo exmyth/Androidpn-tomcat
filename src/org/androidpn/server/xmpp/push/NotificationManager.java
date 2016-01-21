@@ -108,7 +108,7 @@ public class NotificationManager {
      * @param uri the uri
      */
     public void sendNotifcationToUser(String apiKey, String username,
-            String title, String message, String uri) {
+            String title, String message, String uri,boolean shouldSave) {
         log.debug("sendNotifcationToUser()...");
         Random random = new Random();
         String id = Integer.toHexString(random.nextInt());
@@ -129,7 +129,7 @@ public class NotificationManager {
 //        else{
         	try {
 				User user = userService.getUserByUsername(username);
-				if(user != null){
+				if(user != null&&shouldSave){
 					saveNotification(id,apiKey, username, title, message, uri);
 				}
 			} catch (UserNotFoundException e) {
