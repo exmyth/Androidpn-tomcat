@@ -81,17 +81,21 @@ public class NotificationManager {
             }
         }
         */
-        IQ notificationIQ = createNotificationIQ(apiKey, title, message, uri);
         List<User> users = userService.getUsers();
         for(User user : users){
+        	//每次循环都生成随机数,保证发送个每个客户端的消息uuid都是不同的
+        	Random random = new Random();
+        	String id = Integer.toHexString(random.nextInt());
+        	// String id = String.valueOf(System.currentTimeMillis());
+        	IQ notificationIQ = createNotificationIQ(id,apiKey, title, message, uri);
         	ClientSession session = sessionManager.getSession(user.getUsername());
         	if(session != null && session.getPresence().isAvailable()){
         		notificationIQ.setTo(session.getAddress());
                 session.deliver(notificationIQ);
         	}
-        	else{
-        		saveNotification(apiKey, user.getUsername(), title, message, uri);
-        	}
+//        	else{
+        		saveNotification(id,apiKey, user.getUsername(), title, message, uri);
+//        	}
         }
     }
 
@@ -106,32 +110,38 @@ public class NotificationManager {
     public void sendNotifcationToUser(String apiKey, String username,
             String title, String message, String uri) {
         log.debug("sendNotifcationToUser()...");
-        IQ notificationIQ = createNotificationIQ(apiKey, title, message, uri);
+        Random random = new Random();
+        String id = Integer.toHexString(random.nextInt());
+        // String id = String.valueOf(System.currentTimeMillis());
+        IQ notificationIQ = createNotificationIQ(id,apiKey, title, message, uri);
         ClientSession session = sessionManager.getSession(username);
         if (session != null) {
             if (session.getPresence().isAvailable()) {
                 notificationIQ.setTo(session.getAddress());
                 session.deliver(notificationIQ);
             }
+            /*
             else{
-            	saveNotification(apiKey, username, title, message, uri);
+            	saveNotification(id,apiKey, username, title, message, uri);
             }
+            */
         }
-        else{
+//        else{
         	try {
 				User user = userService.getUserByUsername(username);
 				if(user != null){
-					saveNotification(apiKey, username, title, message, uri);
+					saveNotification(id,apiKey, username, title, message, uri);
 				}
 			} catch (UserNotFoundException e) {
 				e.printStackTrace();
 			}
-        }
+//        }
     }
     
-    private void saveNotification(String apiKey, String username,
+    private void saveNotification(String uuid,String apiKey, String username,
             String title, String message, String uri){
     	Notification notification = new Notification();
+    	notification.setUuid(uuid);
     	notification.setApiKey(apiKey);
     	notification.setUsername(username);
     	notification.setTitle(title);
@@ -143,12 +153,14 @@ public class NotificationManager {
     /**
      * Creates a new notification IQ and returns it.
      */
-    private IQ createNotificationIQ(String apiKey, String title,
+    private IQ createNotificationIQ(String id, String apiKey, String title,
             String message, String uri) {
+    	/*
         Random random = new Random();
         String id = Integer.toHexString(random.nextInt());
         // String id = String.valueOf(System.currentTimeMillis());
-
+        */
+        
         Element notification = DocumentHelper.createElement(QName.get(
                 "notification", NOTIFICATION_NAMESPACE));
         notification.addElement("id").setText(id);
