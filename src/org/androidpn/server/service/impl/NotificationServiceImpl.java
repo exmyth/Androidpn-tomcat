@@ -18,8 +18,8 @@ public class NotificationServiceImpl implements NotificationService{
 		notificationDao.saveNotification(notification);
 	}
 
-	public List<Notification> listNotificationByUsername(String username) {
-		return notificationDao.listNotificationByUsername(username);
+	public List<Notification> findNotificationByUsername(String username) {
+		return notificationDao.findNotificationByUsername(username);
 	}
 
 	public void deleteNotification(Notification notification) {

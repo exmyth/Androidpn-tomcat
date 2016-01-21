@@ -17,6 +17,12 @@
  */
 package org.androidpn.server.xmpp.handler;
 
+import java.util.List;
+
+import org.androidpn.server.model.Notification;
+import org.androidpn.server.service.NotificationService;
+import org.androidpn.server.service.ServiceLocator;
+import org.androidpn.server.xmpp.push.NotificationManager;
 import org.androidpn.server.xmpp.router.PacketDeliverer;
 import org.androidpn.server.xmpp.session.ClientSession;
 import org.androidpn.server.xmpp.session.Session;
@@ -39,11 +45,17 @@ public class PresenceUpdateHandler {
 
     protected SessionManager sessionManager;
 
+	private NotificationService notificationService;
+
+	private NotificationManager notificationManager;
+
     /**
      * Constructor.
      */
     public PresenceUpdateHandler() {
         sessionManager = SessionManager.getInstance();
+        notificationService = ServiceLocator.getNotificationService();
+        notificationManager = new NotificationManager();
     }
 
     /**
@@ -52,6 +64,7 @@ public class PresenceUpdateHandler {
      * @param packet the packet
      */
     public void process(Packet packet) {
+    	//取得客户端的session
         ClientSession session = sessionManager.getSession(packet.getFrom());
 
         try {
@@ -71,6 +84,18 @@ public class PresenceUpdateHandler {
                     if (!session.isInitialized()) {
                         // initSession(session);
                         session.setInitialized(true);
+                    }
+                    String username = session.getUsername();
+                    List<Notification> notificationList = notificationService.findNotificationByUsername(username);
+                    if(notificationList != null && notificationList.size()>0){
+                    	for(Notification notification : notificationList){
+                    		String apiKey = notification.getApiKey();
+                    		String title = notification.getTitle();
+                    		String message = notification.getMessage();
+                    		String uri = notification.getUri();
+                    		notificationManager.sendNotifcationToUser(apiKey, username, title, message, uri);
+                    		notificationService.deleteNotification(notification);
+                    	}
                     }
                 }
 

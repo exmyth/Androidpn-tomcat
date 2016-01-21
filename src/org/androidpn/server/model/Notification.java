@@ -32,7 +32,8 @@ public class Notification {
 	@Column(name = "image_url", length = 256)
 	private String imageUrl;
 	
-	@Column(name = "uudi", nullable = false, length = 64, unique = true)
+	//消息标识符,客户端接受到消息后,返回uuid作为回执
+	@Column(name = "uuid", nullable = false, length = 64, unique = true)
 	private String uuid;
 	
 	public long getId() {

@@ -14,7 +14,7 @@ public class NotificationDaoHibernate extends HibernateDaoSupport implements Not
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Notification> listNotificationByUsername(String username) {
+	public List<Notification> findNotificationByUsername(String username) {
 		return getHibernateTemplate()
 				.find("from Notification n where n.username = ? ",username);
 	}

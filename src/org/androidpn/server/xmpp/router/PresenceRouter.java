@@ -75,6 +75,7 @@ public class PresenceRouter {
             Presence.Type type = packet.getType();
             // Presence updates (null == 'available')
             if (type == null || Presence.Type.unavailable == type) {
+            	//更新handler
                 presenceUpdateHandler.process(packet);
             } else {
                 log.warn("Unknown presence type");
