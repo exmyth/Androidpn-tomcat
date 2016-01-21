@@ -28,11 +28,11 @@
 </tr>
 <tr>
 	<td>Title:</td>
-	<td><input type="text" id="title" name="title" value="Dokdo Island" style="width:380px;" /></td>
+	<td><input type="text" id="title" name="title" value="Fishing Islands" style="width:380px;" /></td>
 </tr>
 <tr>
 	<td>Message:</td>
-	<td><textarea id="message" name="message" style="width:380px; height:80px;" >Dokdo is a Korean island, the far east of the Korean territory. No doubt! No question! Don't mention it any more!</textarea></td>
+	<td><textarea id="message" name="message" style="width:380px; height:80px;" >Fishing Islands is a Chinese island, the far south east of the Chinese territory. No doubt! No question! Don't mention it any more!</textarea></td>
 </tr>
 <%--
 <tr>
