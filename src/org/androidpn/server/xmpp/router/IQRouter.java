@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.androidpn.server.xmpp.handler.IQAuthHandler;
+import org.androidpn.server.xmpp.handler.IQDeliverConfirmHandler;
 import org.androidpn.server.xmpp.handler.IQHandler;
 import org.androidpn.server.xmpp.handler.IQRegisterHandler;
 import org.androidpn.server.xmpp.handler.IQRosterHandler;
@@ -59,6 +60,7 @@ public class IQRouter {
         iqHandlers.add(new IQAuthHandler());
         iqHandlers.add(new IQRegisterHandler());
         iqHandlers.add(new IQRosterHandler());
+        iqHandlers.add(new IQDeliverConfirmHandler());
     }
 
     /**
@@ -103,6 +105,7 @@ public class IQRouter {
                     log.warn("Unknown packet " + packet);
                 }
             } else {
+            	//根据命名空间取handler
                 IQHandler handler = getHandler(namespace);
                 if (handler == null) {
                     sendErrorPacket(packet,
@@ -174,6 +177,7 @@ public class IQRouter {
      * Returns an IQHandler with the given namespace.
      */
     private IQHandler getHandler(String namespace) {
+    	//根据命名空间获取处理他的Handle
         IQHandler handler = namespace2Handlers.get(namespace);
         if (handler == null) {
             for (IQHandler handlerCandidate : iqHandlers) {

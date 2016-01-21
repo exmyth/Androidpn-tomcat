@@ -52,6 +52,7 @@ public abstract class IQHandler {
     public void process(Packet packet) {
         IQ iq = (IQ) packet;
         try {
+        	//IQHandler子类实现handleIQ方法来处理回传的消息
         	//handleIQ是抽象方法,
         	//注册交由IQRegisterHandler.handleIQ处理
         	//登录交由IQAuthHandler.handleIQ处理
